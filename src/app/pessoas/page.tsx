@@ -1,16 +1,11 @@
 'use client'
 import { Heading } from "@chakra-ui/react";
 
-
-
-
-export default function Home() {
+export default function Pessoas() {
 
   return (
     <>
-   
-        <Heading>Home</Heading>
-
+    <Heading>Pessoas</Heading>
     </>
   )
 }
