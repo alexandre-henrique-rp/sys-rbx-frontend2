@@ -10,14 +10,17 @@ import {
   Text,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { redirect, usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import NavMenuItems from './menuItens';
 import ProfilePopover from './profile-popover';
+import { useSession } from 'next-auth/react';
 
 function Navbar() {
+  
   const pathName = usePathname();
   const { push } = useRouter()
+
   
   return (
     <Flex

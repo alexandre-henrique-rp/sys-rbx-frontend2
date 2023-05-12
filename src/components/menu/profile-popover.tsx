@@ -13,14 +13,11 @@ import {
   Portal,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
 import { RiExternalLinkFill } from 'react-icons/ri';
 
 const ProfilePopover = () => {
-  const { data: session } = useSession();
-  console.log("🚀 ~ file: profile-popover.tsx:22 ~ ProfilePopover ~ session:", session)
-  const router = useRouter();
+  const { data: session } = useSession({ required: true });
 
   return (
     <>
@@ -61,7 +58,7 @@ const ProfilePopover = () => {
                       <Button
                         bg="red.200"
                         rightIcon={<RiExternalLinkFill />}
-                        onClick={() => router.push('/api/auth/signout')}
+                        onClick={() => signOut({ redirect: true, callbackUrl: '/auth/signin' })}
                       >
                         Sair
                       </Button>

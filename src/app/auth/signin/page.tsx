@@ -6,7 +6,7 @@ import { FormEventHandler, useState } from "react";
 
 
 export default function Auth(): JSX.Element {
-  const { push } = useRouter()
+ 
   const [user, setUser] = useState<string>('');
   const [pass, setPass] = useState<string>('');
   const toast = useToast();
@@ -16,7 +16,8 @@ export default function Auth(): JSX.Element {
     const res: any = await signIn('credentials', {
       Username: user,
       Password: pass,
-      redirect: false,
+      redirect: true,
+      callbackUrl: '/home',
     });
     
     if (res.status !== 200) {
@@ -26,9 +27,6 @@ export default function Auth(): JSX.Element {
         duration: 5000,
         position: 'top-right',
       });
-
-    }else {
-      push('/')
     }
   };
 
