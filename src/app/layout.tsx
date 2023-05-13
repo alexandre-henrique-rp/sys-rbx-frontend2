@@ -7,6 +7,7 @@ import { Providers } from "@/components/providers";
 import { SessionProvider, useSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { AuthProtected } from "@/components/auth";
+import { checkIsPublicRoute } from "@/functions/check-is public-route";
 
 
 
@@ -22,31 +23,14 @@ interface IProps {
   session: Session
 }
 
+
 export default function RootLayout({ children, session }: IProps) {
+  
   const pathname = usePathname();
   const { push } = useRouter()
 
-  if (pathname === '/auth/signin') {
-    return (
-      <>
-        <html lang="pt-BR">
-          <body className={inter.className}>
-            <Providers>
-              <Flex
-                h={'100vh'}
-                flexDir={['column', 'column', 'row']}
-                overflow="hidden"
-                maxW="2000px"
-                fontSize={'1rem'}
-              >
-                {children}
-              </Flex>
-            </Providers>
-          </body>
-        </html>
-      </>
-    );
-  }
+  const isPublicPage = checkIsPublicRoute(pathname!);
+  console.log("🚀 ~ file: layout.tsx:31 ~ RootLayout ~ isPublicPage:", isPublicPage)
 
   if (
     pathname ===
@@ -56,41 +40,50 @@ export default function RootLayout({ children, session }: IProps) {
   }
 
   return (
-    <SessionProvider session={session}>
-      <AuthProtected>
-        <html lang="pt-BR">
-          <body className={inter.className}>
-            <Providers>
-              <Flex
-                h={'100vh'}
-                flexDir={['column', 'column', 'row']}
-                overflow="hidden"
-                maxW="2000px"
-                fontSize={'1rem'}
-              >
-                <Flex
-                  alignItems="center"
-                  bg="gray.700"
-                  flexDir="column"
-                  minW="150px"
-                  w={['100%', '100%', '15%', '15%', '15%']}
-                >
-                  <Navbar />
-                </Flex>
-                <Flex
-                  flexDir="column"
-                  minH="100vh"
-                  overflow="auto"
-                  w={{ sm: '100%', md: '85%' }}
-                  h={'100%'}
-                >
-                  {children}
-                </Flex>
-              </Flex>
-            </Providers>
-          </body>
-        </html>
-      </AuthProtected >
-    </SessionProvider>
+
+
+    <html lang="pt-BR">
+      <body className={inter.className}>
+        <Providers>
+          <Flex
+            h={'100vh'}
+            flexDir={['column', 'column', 'row']}
+            overflow="hidden"
+            maxW="2000px"
+            fontSize={'0.5rem'}
+          >
+            {isPublicPage && children}
+            {!isPublicPage && (
+              <>
+                <SessionProvider session={session}>
+                  <AuthProtected>
+                    <Flex
+                      alignItems="center"
+                      bg="gray.700"
+                      flexDir="column"
+                      minW="150px"
+                      w={['100%', '100%', '15%', '15%', '15%']}
+                    >
+                      <Navbar />
+                    </Flex>
+                    <Flex
+                      flexDir="column"
+                      minH="100vh"
+                      overflow="auto"
+                      w={{ sm: '100%', md: '85%' }}
+                      h={'100%'}
+                    >
+                      {children}
+                    </Flex>
+                  </AuthProtected >
+                </SessionProvider>
+              </>
+            )}
+          </Flex>
+        </Providers>
+      </body>
+    </html>
+
+
   )
 }

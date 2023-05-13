@@ -1,3 +1,4 @@
+import { FormEmpresa } from "@/components/empresas/form";
 import dynamic from "next/dynamic";
 
 interface UpDateProps {
@@ -7,7 +8,6 @@ interface UpDateProps {
 }
 
 export default async function UpDate({ params }: UpDateProps) {
-  const FormEmpresa = dynamic(() => import('@/components/empresas/form').then((mod) => mod.FormEmpresa))
   const { id } = params;
   const response = await fetch(process.env.NEXT_PUBLIC_STRAPI_API_URL +
     `/empresas/${id}?&populate=%2A`, {

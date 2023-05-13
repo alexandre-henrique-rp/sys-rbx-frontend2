@@ -5,7 +5,7 @@ import { JWT } from "next-auth/jwt";
 import { NextAuthOptions } from "next-auth";
 
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   jwt: {
     secret: process.env.JWT_SIGNING_PRIVATE_KEY
   },
@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
           );
 
           const res = await resposta.json();
-          console.log("🚀 ~ file: [...nextauth].ts:49 ~ authorize ~ res:", res)
+         
           const { jwt, user } = res;
 
           const { confirmed, blocked, username, id, email, pemission } =

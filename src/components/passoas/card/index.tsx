@@ -5,7 +5,7 @@ import { RiPhoneFill } from 'react-icons/ri';
 import { memo } from "react";
 
 
-const CardEmpresas = (props: {
+const CardPessoas = (props: {
   data: any
 }) => {
   const toast = useToast()
@@ -104,4 +104,4 @@ const CardEmpresas = (props: {
   )
 }
 
-export default memo(CardEmpresas)
+export default memo(CardPessoas)

@@ -29,7 +29,7 @@ import { useSession } from "next-auth/react";
 
 export const FormEmpresa = (props: { Data?: any }) => {
   const router = useRouter();
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
   const [CNPJ, setCNPJ] = useState('');
   const [MaskCNPJ, setMaskCNPJ] = useState('');
   const [nome, setNome] = useState('');

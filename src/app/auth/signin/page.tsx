@@ -17,17 +17,8 @@ export default function Auth(): JSX.Element {
       Username: user,
       Password: pass,
       redirect: true,
-      callbackUrl: '/home',
+      callbackUrl: '/',
     });
-    
-    if (res.status !== 200) {
-      toast({
-        title: 'Usuario ou Senha Incorreto',
-        status: 'error',
-        duration: 5000,
-        position: 'top-right',
-      });
-    }
   };
 
   return (

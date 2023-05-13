@@ -1,7 +1,8 @@
-import dynamic from "next/dynamic";
+import { FormEmpresa } from "@/components/empresas/form";
+
 
 export default async function Create() {
-  const FormEmpresa = dynamic(() => import('@/components/empresas/form').then((mod) => mod.FormEmpresa))
+  
   return (
     <>
       <FormEmpresa />

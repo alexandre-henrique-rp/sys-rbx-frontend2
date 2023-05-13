@@ -27,6 +27,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "remask": "^1.1.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "utils": "^0.3.1"
   }
 }

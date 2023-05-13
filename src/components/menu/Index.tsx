@@ -47,7 +47,7 @@ function Navbar() {
                   <ListIcon fontSize="2xl" color="greenyellow" as={navItem.icon} />
                     <Link
                     onClick={()=> push(navItem.url)}
-                      fontSize="lg"
+                      fontSize="sm"
                       color={
                         pathName === navItem.url
                           ? 'greenyellow'

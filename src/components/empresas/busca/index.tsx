@@ -1,8 +1,8 @@
 import { Box, Button, Flex, FormLabel, Input, chakra } from "@chakra-ui/react"
 import { useRouter } from "next/navigation";
 import { SetStateAction, useEffect, useMemo, useState } from "react"
-import { CardEmpresas } from "./card";
-import { BuscaInput } from "./busca";
+import  CardEmpresas  from "./card";
+
 
 export const BuscaEmpresa = (props: { data: any }) => {
   const router = useRouter();
