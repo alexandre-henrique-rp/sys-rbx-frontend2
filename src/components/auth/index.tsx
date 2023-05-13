@@ -1,10 +1,8 @@
 'use client'
 
-import { APP_ROUTES } from "@/constants/app-routes";
-import { checkUserAuthenticated } from "@/functions/check-is public-route/checkUserAuthenticated";
 import { useSession } from "next-auth/react";
 import { redirect, usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 interface IProps {
@@ -12,28 +10,28 @@ interface IProps {
 }
 
 
+
 export const AuthProtected = ({ children }: IProps) => {
   const pathName = usePathname();
   const { push } = useRouter()
+  const [user, setUser] = useState(false)
   
-  const { status } = useSession({
+  const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
       redirect('/auth/signin')
     }
   })
-  const isUserAuthenticated = !!status;
+  const isUserAuthenticated = user;
 
   useEffect(
     () => {
       if (status === "loading") {
         console.log( "Loading or not authenticated...")
       }
-      // if (!isUserAuthenticated) {
-      //   push('/auth/signin')
-      // }
+      setUser(!!session)
     },
-    [isUserAuthenticated, pathName, push, status]
+    [isUserAuthenticated, pathName, push, session, status]
   )
 
   return (

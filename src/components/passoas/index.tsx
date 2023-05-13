@@ -41,7 +41,7 @@ export const BodyPessoa = (props: {data: any}) =>{
               textTransform="capitalize"
               letterSpacing="wide"
             >
-              Busca por empresa
+              Busca por Pessoas
             </FormLabel>
             <Input
               type="text"
@@ -64,14 +64,7 @@ export const BodyPessoa = (props: {data: any}) =>{
             alignItems="center"
             flexWrap={'wrap'}
           >
-            <Button
-              colorScheme="whatsapp"
-              fontSize={'0.8rem'}
-              onClick={() => push("/empresas/cadastro")}
-            >
-              Cadastrar Empresa
-            </Button>
-            <Button fontSize={'0.8rem'} colorScheme="cyan" onClick={() => push('/pessoas/cadastro')}>Add Nova Pessoa</Button>
+            <Button fontSize={'0.8rem'} colorScheme="cyan" onClick={() => push('/pessoas/criar')}>Add Nova Pessoa</Button>
           </Box>
         </Flex>
         <Box h={"95%"} bg="#edf3f8" overflow={"auto"}>

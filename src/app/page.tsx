@@ -1,7 +1,6 @@
 
 "use client"
 import { Heading } from "@chakra-ui/react";
-import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { Suspense } from "react";
 

@@ -16,10 +16,8 @@ const CardPessoas = (props: {
       {data.map((i: any) => {
         const id = i.id
         const nome = i.attributes.nome
-        const CNPJ = i.attributes.CNPJ
-        const celular = i.attributes.celular
-        const telefone = i.attributes.fone
-        const responsavel = i.attributes.responsavel.data?.attributes.nome
+        const celular = i.attributes.whatsapp
+        console.log("🚀 ~ file: index.tsx:23 ~ {data.map ~ responsavel:", i.attributes.whatsapp )
         return (
           <>
             <Box
@@ -42,14 +40,14 @@ const CardPessoas = (props: {
                   fontWeight="700"
                   mr={3}
                   mb={3}
-                  href={`/empresas/${id}`}
+                  href={`/pessoas/${id}`}
                 >
                   {nome}
                 </Link>
                 <chakra.p
                   fontSize="10px"
                 >
-                  {mask(CNPJ, ['99.999.999/9999-99'])}
+                 
                 </chakra.p>
                 <Flex gap={3}>
                 </Flex>
@@ -68,32 +66,6 @@ const CardPessoas = (props: {
                     </Box>
                   </>
                 )}
-                {!telefone || telefone === "" ? null : (
-                  <>
-                    <Box mt={3}>
-                      <Link
-                        fontSize="12px"
-                        color="gray.700"
-                        fontWeight="700"
-                        onClick={() => {
-                          navigator.clipboard.writeText(telefone);
-                          toast({
-                            title: 'Telefone copiado',
-                            position: 'top-right',
-                            duration: 1000,
-                          });
-                        }}
-                      >
-                        <Icon as={RiPhoneFill} />{' '}
-                        {mask(telefone, [
-                          '(99) 9999-9999',
-                          '(99) 9 9999-9999',
-                        ])}
-                      </Link>
-                    </Box>
-                  </>
-                )}
-                <chakra.span>{responsavel}</chakra.span>
               </Flex>
             </Box>
           </>

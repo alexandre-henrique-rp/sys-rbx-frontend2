@@ -85,7 +85,7 @@ export default function Empresas() {
             >
               Cadastrar Empresa
             </Button>
-            <Button fontSize={'0.8rem'} colorScheme="cyan" onClick={() => push('/pessoas/cadastro')}>Add Nova Pessoa</Button>
+            <Button fontSize={'0.8rem'} colorScheme="cyan" onClick={() => push('/pessoas/criar')}>Add Nova Pessoa</Button>
           </Box>
         </Flex>
         <Box h={"95%"} bg="#edf3f8" overflow={"auto"}>

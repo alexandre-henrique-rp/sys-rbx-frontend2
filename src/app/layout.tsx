@@ -1,13 +1,13 @@
 "use client";
-import Navbar from "@/components/menu/Index";
-import { Ubuntu } from 'next/font/google'
-import { Flex } from "@chakra-ui/react";
-import { redirect, usePathname, useRouter } from "next/navigation";
-import { Providers } from "@/components/providers";
-import { SessionProvider, useSession } from "next-auth/react";
-import { Session } from "next-auth";
 import { AuthProtected } from "@/components/auth";
+import Navbar from "@/components/menu/Index";
+import { Providers } from "@/components/providers";
 import { checkIsPublicRoute } from "@/functions/check-is public-route";
+import { Flex } from "@chakra-ui/react";
+import { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import { Ubuntu } from 'next/font/google';
+import { usePathname, useRouter } from "next/navigation";
 
 
 
@@ -25,12 +25,11 @@ interface IProps {
 
 
 export default function RootLayout({ children, session }: IProps) {
-  
+
   const pathname = usePathname();
   const { push } = useRouter()
 
   const isPublicPage = checkIsPublicRoute(pathname!);
-  console.log("🚀 ~ file: layout.tsx:31 ~ RootLayout ~ isPublicPage:", isPublicPage)
 
   if (
     pathname ===
@@ -50,7 +49,6 @@ export default function RootLayout({ children, session }: IProps) {
             flexDir={['column', 'column', 'row']}
             overflow="hidden"
             maxW="2000px"
-            fontSize={'0.5rem'}
           >
             {isPublicPage && children}
             {!isPublicPage && (

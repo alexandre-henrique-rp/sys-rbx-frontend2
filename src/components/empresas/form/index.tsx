@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { mask, unMask } from 'remask';
 import { CompPessoa } from '../listResp';
 import { useSession } from "next-auth/react";
+import { BtmBack } from '@/components/geral/BTMBack';
 
 
 export const FormEmpresa = (props: { Data?: any }) => {
@@ -396,7 +397,9 @@ export const FormEmpresa = (props: { Data?: any }) => {
                   spacing={6}
                 >
                   <SimpleGrid columns={12} spacing={3}>
-                    <Heading as={GridItem} colSpan={12} size="md">
+
+                    <BtmBack Url={'/empresas'} />
+                    <Heading as={GridItem} colSpan={10} size="md">
                       Cadastro de Empresa
                     </Heading>
                   </SimpleGrid>

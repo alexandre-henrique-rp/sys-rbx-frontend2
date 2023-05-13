@@ -19,7 +19,7 @@ const GetPessoas = async () => {
 
 export default async function Pessoas() {
   const DataPessoas = await GetPessoas()
-  console.log("🚀 ~ file: page.tsx:21 ~ Pessoas ~ DataPessoas:", DataPessoas)
+  
 
   return (
     <>

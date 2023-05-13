@@ -16,8 +16,14 @@ import NextLink from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { RiExternalLinkFill } from 'react-icons/ri';
 
+const getUser = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data: session } = useSession()
+  return session
+}
+
 const ProfilePopover = () => {
-  const { data: session } = useSession({ required: true });
+  const session = getUser();
 
   return (
     <>
