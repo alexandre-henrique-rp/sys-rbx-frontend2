@@ -10,7 +10,6 @@ const getUser = () => {
   return session?.user.email.replace(/\"/g, '')
 }
 
-
 export default function Produtos() {
   const Email = getUser()
   const Token = 'b29cda672c7240256e46b7d68924e320';

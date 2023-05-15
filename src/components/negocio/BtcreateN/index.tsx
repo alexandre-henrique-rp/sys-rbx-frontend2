@@ -136,39 +136,33 @@ export const BtCreate = async (props: { onLoading: any }) => {
   const salve = async () => {
     props.onLoading(true);
     const data = {
-      status: true,
-      deadline: Deadline,
-      Budget: !budgets
-        ? "R$ 0,00"
-        : parseFloat(budgets).toLocaleString("pt-br", {
-          style: "currency",
-          currency: "BRL",
-        }),
-      Approach: Approach,
-      empresa: Empresa,
-      history: historico,
-      user: session?.user.id,
-      incidentRecord: [MSG],
+      data: {
+        nBusiness: '',
+        status: true,
+        deadline: Deadline,
+        Budget: !budgets
+          ? "R$ 0,00"
+          : parseFloat(budgets).toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+          }),
+        Approach: Approach,
+        empresa: parseInt(Empresa),
+        history: historico,
+        user: session?.user.id,
+        incidentRecord: [MSG],
+        andamento: 1,
+        etapa: 3,
+      }
     };
 
     const url = "/api/db/business/post";
 
-    await fetch(process.env.NEXT_PUBLIC_STRAPI_API_URL + )
+    await fetch()
 
 
 
-    await axios({
-      method: "POST",
-      url: url,
-      data: data,
-    })
-      .then((res: any) => {
-        console.log(res);
-        props.onLoading(false);
-        Reset();
 
-      })
-      .catch((err: any) => console.error(err));
   };
 
   const Reset = () => {
