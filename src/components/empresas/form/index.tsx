@@ -26,6 +26,9 @@ import { mask, unMask } from 'remask';
 import { CompPessoa } from '../listResp';
 import { useSession } from "next-auth/react";
 import { BtmBack } from '@/components/geral/BTMBack';
+import { PutEmpresa } from './put';
+import { PostEmpresa } from './post';
+import { DeleteEmpresa } from './delete';
 
 
 export const FormEmpresa = (props: { Data?: any }) => {
@@ -79,7 +82,7 @@ export const FormEmpresa = (props: { Data?: any }) => {
   const [maxPg, setMaxpg] = useState('');
   const [forpg, setForpg] = useState('');
   const [frete, setFrete] = useState('');
-  const [status, setStatus] = useState(false);
+  const [status, setStatus] = useState(true);
   const [ID, setID] = useState('');
   const [Responsavel, setResponsavel] = useState('');
   const toast = useToast();
@@ -167,8 +170,7 @@ export const FormEmpresa = (props: { Data?: any }) => {
       const response: any = await consult.json();
       console.log("🚀 ~ file: index.tsx:168 ~ consulta ~ response:", response)
 
-      setNome(response.razao_social);
-      setFantasia(response.estabelecimento.nome_fantasia);
+      setFantasia(response.razao_social);
       setTipoPessoa('cnpj');
       setIE(
         response.estabelecimento.inscricoes_estaduais[0]
@@ -245,7 +247,7 @@ export const FormEmpresa = (props: { Data?: any }) => {
         porte: porte,
         simples: simples,
         ieStatus: ieStatus,
-        status: true,
+        status: status,
         adFrailLat: adFrailLat,
         adFrailCab: adFrailCab,
         adEspecialLat: adEspecialLat,
@@ -273,11 +275,7 @@ export const FormEmpresa = (props: { Data?: any }) => {
         history: historico,
       },
     };
-    const reload = () => {
-      setTimeout(() => {
-        router.back();
-      }, 500);
-    };
+
 
     if (ID) {
       await fetch(process.env.NEXT_PUBLIC_STRAPI_API_URL + '/empresas/' + ID, {
@@ -289,8 +287,13 @@ export const FormEmpresa = (props: { Data?: any }) => {
         body: JSON.stringify(data),
       })
         .then((resp) => resp.json())
-        .then((response) => {
-          console.log(response)
+        .then(async (response) => {
+          if(status === false){
+            const respose = await DeleteEmpresa(CNPJ)
+            return response
+          }
+          await PutEmpresa(data);
+          console.log(response);
           toast({
             title: 'Cliente atualizado',
             status: 'success',
@@ -310,7 +313,8 @@ export const FormEmpresa = (props: { Data?: any }) => {
         body: JSON.stringify(data),
       })
         .then((resp) => resp.json())
-        .then((response) => {
+        .then(async (response) => {
+          await PostEmpresa(data)
           console.log(response)
           toast({
             title: 'Cliente registrado',
@@ -464,7 +468,7 @@ export const FormEmpresa = (props: { Data?: any }) => {
                           color: 'gray.50',
                         }}
                       >
-                        Razão social
+                        Nome de exibição
                       </FormLabel>
                       <Input
                         type="text"
