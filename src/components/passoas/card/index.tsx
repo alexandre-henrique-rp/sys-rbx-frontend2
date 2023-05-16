@@ -1,4 +1,4 @@
-import { Box, Flex, chakra, Icon, useToast, Link } from "@chakra-ui/react";
+import { Box, Flex, chakra, Icon, useToast, Link, FormLabel, Input } from "@chakra-ui/react";
 import { mask } from "remask";
 import { SiWhatsapp } from "react-icons/si";
 import { RiPhoneFill } from 'react-icons/ri';
@@ -17,7 +17,8 @@ const CardPessoas = (props: {
         const id = i.id
         const nome = i.attributes.nome
         const celular = i.attributes.whatsapp
-        console.log("🚀 ~ file: index.tsx:23 ~ {data.map ~ responsavel:", i.attributes.whatsapp )
+        const [list] = i.attributes.empresas.data
+        const empresas = list?.attributes.nome === undefined ? '' : list.attributes.nome
         return (
           <>
             <Box
@@ -47,10 +48,8 @@ const CardPessoas = (props: {
                 <chakra.p
                   fontSize="10px"
                 >
-                 
+                  {empresas}
                 </chakra.p>
-                <Flex gap={3}>
-                </Flex>
                 {!celular ? null : (
                   <>
                     <Box mt={3}>

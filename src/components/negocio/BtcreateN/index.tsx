@@ -1,4 +1,5 @@
 /* eslint-disable react/no-children-prop */
+
 import {
   Box,
   Button,
@@ -28,6 +29,7 @@ import { MdOutlineAddCircleOutline } from "react-icons/md";
 import { BeatLoader } from "react-spinners";
 import { mask, unMask } from "remask";
 import { NumeroPedido } from "./post";
+
 
 const activeLabelStyles = {
   transform: "scale(0.85) translateY(-24px)",
@@ -92,7 +94,7 @@ export const BtCreate = (props: { onLoading: any }) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   const [work, setWork] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     (async () => {
       const empresasList = await GetEmpresas()
       setWork(empresasList)
@@ -127,21 +129,22 @@ export const BtCreate = (props: { onLoading: any }) => {
     setBudgetsMask(maskedValue);
   };
 
-  const historico = {
+  const historico = [{
     vendedor: session?.user.name,
     date:
       new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
     msg: `Vendedor ${session?.user.name}, criou esse Negócio`,
-  };
+  }];
 
-  const MSG = {
+  const MSG = [{
     msg: `Vendedor ${session?.user.name}, criou esse Negócio`,
     date: new Date().toISOString(),
     user: "Sistema",
-  };
+  }];
 
   const salve = async () => {
     const NNegocio = await NumeroPedido()
+
     props.onLoading(true);
     const data = {
       data: {
@@ -158,7 +161,7 @@ export const BtCreate = (props: { onLoading: any }) => {
         empresa: parseInt(Empresa),
         history: historico,
         user: session?.user.id,
-        incidentRecord: [MSG],
+        incidentRecord: MSG,
         andamento: 1,
         etapa: 3,
       }
@@ -174,6 +177,7 @@ export const BtCreate = (props: { onLoading: any }) => {
     })
       .then((response) => response.json())
       .then((data) => {
+        Reset();
         console.log(data)
       })
       .catch((error) => console.log("error", error));

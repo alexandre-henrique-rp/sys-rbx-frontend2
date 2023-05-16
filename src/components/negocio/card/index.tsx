@@ -21,7 +21,7 @@ const GetCard = async () => {
 }
 
 
-export const BodyCard = () => {
+export const BodyCard = (props:{loading: any, onload: any}) => {
   const [dados, setDados] = useState<any | null>([]);
   const { push } = useRouter()
 
@@ -29,8 +29,10 @@ export const BodyCard = () => {
     (async() =>{
       const cardNegocios = await GetCard()
       setDados(cardNegocios)
+      props.onload(false)
     })()
-  }, [])
+  }, [props, props.loading])
+  
 
   return (
     <>
@@ -42,14 +44,14 @@ export const BodyCard = () => {
           <>
             <Box
               mx="auto"
-              px={8}
+              px={4}
               py={5}
               mb={5}
               rounded="lg"
               shadow="lg"
               boxShadow="dark-lg"
               bg="white"
-              w={'25rem'}
+              w={'20rem'}
               key={i.id}
               fontSize="0.5rem"
               cursor={'pointer'}

@@ -5,7 +5,7 @@ import {
   Box,
   Flex,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Nogocios() {
 
@@ -14,7 +14,11 @@ export default function Nogocios() {
   function tragetReload(Loading: boolean | ((prevState: boolean) => boolean)) {
     setLoad(Loading);
   }
-
+  function tragetOnload() {
+    if(load){
+      setLoad(false);
+    }
+  }
 
   return (
     <>
@@ -55,7 +59,7 @@ export default function Nogocios() {
                 <Flex
                   flexWrap={'wrap'}
                 >
-                  <BodyCard />
+                  <BodyCard loading={load} onload={tragetOnload}/>
                 </Flex>
               </Box>
             </Box>

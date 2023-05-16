@@ -1,18 +1,23 @@
-export const NumeroPedido = async () => {
-  
+const getNumero = async () => {
   const numero = await fetch(
     process.env.NEXT_PUBLIC_STRAPI_API_URL +
       "/businesses?fields[0]=id&fields[1]=nBusiness&sort=id%3Adesc",
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.ATORIZZATION_TOKEN}`
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_KEY}`
       }
     }
   );
 
   const consulta = await numero.json();
-  const [respostaConsulta] = !consulta.data ? null : consulta.data;
+  return consulta.data;
+};
+
+export const NumeroPedido = async () => {
+  const consulta = await getNumero();
+
+  const [respostaConsulta] = consulta;
   const resposta =
     respostaConsulta === null
       ? "001"
