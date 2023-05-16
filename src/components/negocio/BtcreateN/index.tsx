@@ -23,11 +23,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import { SetStateAction, useEffect, useState } from "react";
-import { FaLocationArrow } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { MdOutlineAddCircleOutline } from "react-icons/md";
 import { BeatLoader } from "react-spinners";
 import { mask, unMask } from "remask";
+import { NumeroPedido } from "./post";
 
 const activeLabelStyles = {
   transform: "scale(0.85) translateY(-24px)",
@@ -82,7 +82,7 @@ const GetEmpresas = async () => {
   return data.data
 }
 
-export const BtCreate = async (props: { onLoading: any }) => {
+export const BtCreate = (props: { onLoading: any }) => {
   const { data: session } = useSession();
   const [budgets, setBudgets] = useState("");
   const [budgetsMask, setBudgetsMask] = useState("");
@@ -90,8 +90,15 @@ export const BtCreate = async (props: { onLoading: any }) => {
   const [Empresa, setEmpresa] = useState("");
   const [Deadline, setDeadline] = useState("");
   const { onOpen, onClose, isOpen } = useDisclosure();
+  const [work, setWork] = useState([]);
 
-  const work = await GetEmpresas()
+  useEffect(()=>{
+    (async () => {
+      const empresasList = await GetEmpresas()
+      setWork(empresasList)
+    })()
+  }, [])
+
 
 
   const maskPreco = (e: any) => {
@@ -134,10 +141,11 @@ export const BtCreate = async (props: { onLoading: any }) => {
   };
 
   const salve = async () => {
+    const NNegocio = await NumeroPedido()
     props.onLoading(true);
     const data = {
       data: {
-        nBusiness: '',
+        nBusiness: NNegocio,
         status: true,
         deadline: Deadline,
         Budget: !budgets
@@ -156,13 +164,19 @@ export const BtCreate = async (props: { onLoading: any }) => {
       }
     };
 
-    const url = "/api/db/business/post";
-
-    await fetch()
-
-
-
-
+    await fetch(process.env.NEXT_PUBLIC_STRAPI_API_URL + "/businesses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_KEY}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((error) => console.log("error", error));
   };
 
   const Reset = () => {

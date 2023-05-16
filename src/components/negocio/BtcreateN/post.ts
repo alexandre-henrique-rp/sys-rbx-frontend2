@@ -38,20 +38,5 @@ export const NumeroPedido = async () => {
     ? Number(anoVigente + "000" + 1)
     : newBusinesses;
 
-  const dataAtualizado = {
-    data: {
-      status: true,
-      statusAnd: "Ativo",
-      deadline: data.deadline,
-      nBusiness: nBusiness.toString(),
-      Budget: data.Budget,
-      Approach: data.Approach,
-      history: [data.history],
-      incidentRecord: data.incidentRecord,
-      empresa: Number(data.empresa),
-      user: data.user,
-      andamento: 1,
-      etapa: 3
-    }
-  };
+  return nBusiness.toString();
 };
