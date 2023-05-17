@@ -32,7 +32,7 @@ const NavMenuItems = [
   },
   {
     id: '4',
-    url: '/Propostas',
+    url: '/propostas',
     text: 'Propostas',
     icon: AiOutlineCodepen,
     iconComponent: <AiOutlineCodepen />,
