@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 import { BTMPdf } from "../BTMPdf";
 import { LoteDb } from "./requests/loteDb";
 import { LoteRibermax } from "./requests/loteRibermax";
+import { Trello } from "./requests/trello";
+import { PedidoClientePost } from "./requests/postPedido";
 
 
 
@@ -54,8 +56,8 @@ export const CardList = (props: { id: string }) => {
       const requests = [
         LoteDb(numero),
         LoteRibermax(numero),
-      fazerRequisicao(`/api/db/trello/${numero}`, "POST"),
-      fazerRequisicao("/api/query/pedido/" + numero, "POST")
+        Trello(numero),
+        PedidoClientePost(numero),
       ];
   
       // Executa todas as requisições em paralelo

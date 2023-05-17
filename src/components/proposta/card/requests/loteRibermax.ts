@@ -1,22 +1,9 @@
-const GetLoteDb = async (numero: any) => {
-  const respose = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/lotes?populate=*&filters[nProposta][$eq]=${numero}&sort[0]=id%3Adesc`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_KEY}`
-      }
-    }
-  );
-  const data = await respose.json();
-  return data.data;
-};
-
+import { PostErroPHP } from "./lid/erroPhp";
+import { GetLoteProposta } from "./lid/getLote";
 
 
 export const LoteRibermax = async (numero: any) => {
-  const items = await GetLoteDb(numero);
+  const items = await GetLoteProposta(numero);
 
   const TokenRibermax: any = process.env.ATORIZZATION_TOKEN_RIBERMAX;
   const EmailRibermax: any = process.env.ATORIZZATION_EMAIL
@@ -61,7 +48,7 @@ export const LoteRibermax = async (numero: any) => {
             error: error.response.data
           }
         };
-        return await ErroPHP(data);
+        return await PostErroPHP(data);
       });
 
     promessas.push(promessa);
@@ -75,18 +62,4 @@ export const LoteRibermax = async (numero: any) => {
 
 
 
-const ErroPHP =async (data:any) => {
-  await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/erro-phps`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_KEY}`
-      }
-    }
-  )
-  .then((res) => res.json())
-  .then((response) => console.log(response))
-  .catch((err) => console.log(err))
-}
+
