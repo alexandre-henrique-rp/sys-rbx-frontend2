@@ -1,4 +1,5 @@
 'use client'
+import { CardList } from "@/components/proposta/card";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { BsArrowLeftCircleFill } from "react-icons/bs";

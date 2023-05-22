@@ -3,23 +3,23 @@ import {
   Button,
   chakra,
   Flex,
-  Link,
   SimpleGrid,
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { BTMPdf } from "../BTMPdf";
+import { useState } from "react";
+
 import { LoteDb } from "./requests/loteDb";
 import { LoteRibermax } from "./requests/loteRibermax";
 import { Trello } from "./requests/trello";
 import { PedidoClientePost } from "./requests/postPedido";
+import { useRouter } from "next/navigation";
+import  BTMPdf  from "./BtmPdf";
 
 
 
 export const CardList = (props: { id: string }) => {
-  const router = useRouter();
+  const {push} = useRouter();
   const toast = useToast();
   const [Data, setData] = useState([]);
 
@@ -81,7 +81,7 @@ export const CardList = (props: { id: string }) => {
         position: 'top-right',
       });
   
-      setTimeout(() => router.push("/negocios/" + props.id), 1500);
+      setTimeout(() => push("/negocios/" + props.id), 1500);
     } catch (err) {
       console.log(err);
   
@@ -107,7 +107,6 @@ export const CardList = (props: { id: string }) => {
         {!Data
           ? null
           : Data.map((i: any) => {
-            console.log("🚀 ~ file: index.tsx:111 ~ CardList ~ i:", i)
             const dat = new Date(i.attributes.dataPedido);
             const meses = [
               "Jan",
@@ -205,7 +204,7 @@ export const CardList = (props: { id: string }) => {
                           p={3}
                           colorScheme={"blackAlpha"}
                           onClick={() =>
-                            router.push(
+                            push(
                               "/Propostas/update/" + i.attributes.nPedido
                             )
                           }
