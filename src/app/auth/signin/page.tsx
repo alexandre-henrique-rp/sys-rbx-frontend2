@@ -6,7 +6,7 @@ import { FormEventHandler, useState } from "react";
 
 
 export default function Auth(): JSX.Element {
- 
+
   const [user, setUser] = useState<string>('');
   const [pass, setPass] = useState<string>('');
   const toast = useToast();
@@ -29,10 +29,10 @@ export default function Auth(): JSX.Element {
     >
       <Flex p={8} flex={1} align={'center'} justify={'center'}>
         <Stack spacing={4} w={'full'} maxW={'md'}>
-          <Heading fontSize={'2xl'}>Sign in to your account</Heading>
+          <Heading fontSize={'2xl'}>CRM Ribermax</Heading>
           <Box>
             <FormControl>
-              <FormLabel htmlFor="email">Email address</FormLabel>
+              <FormLabel htmlFor="email">Usuario</FormLabel>
               <Input
                 borderColor="gray.400"
                 name="email"
@@ -41,7 +41,7 @@ export default function Auth(): JSX.Element {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Senha</FormLabel>
               <Input
                 borderColor="gray.400"
                 name="password"
@@ -55,10 +55,10 @@ export default function Auth(): JSX.Element {
                 align={'start'}
                 justify={'space-between'}
               >
-                <Link color={'blue.500'}>Forgot password?</Link>
+                <Link color={'blue.500'} fontSize={'10px'}>Esqueceu sua senha?</Link>
               </Stack>
               <Button colorScheme={'blue'} variant={'solid'} onClick={handleSubmit}>
-                Sign in
+                Login
               </Button>
             </Stack>
           </Box>

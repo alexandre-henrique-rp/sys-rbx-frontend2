@@ -3,6 +3,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { Session } from "next-auth/core/types";
 import { JWT } from "next-auth/jwt";
 import { NextAuthOptions } from "next-auth";
+import { AnyCnameRecord } from "dns";
+import { NextResponse } from "next/server";
 
 
 const authOptions: NextAuthOptions = {
@@ -41,7 +43,20 @@ const authOptions: NextAuthOptions = {
           );
 
           const res = await resposta.json();
-         
+
+           const erro = {
+            jwt: null,
+            id: null,
+            name: null,
+            email: null,
+            confirmed: null,
+            blocked: null,
+            pemission: null
+           }
+          if (res.error) {
+            throw new Error("Usuário e senha incorreto");
+          }
+ 
           const { jwt, user } = res;
 
           const { confirmed, blocked, username, id, email, pemission } =
@@ -58,12 +73,12 @@ const authOptions: NextAuthOptions = {
 
           if (!jwt || !id || !username || !email) {
             throw new Error("Usuário e senha incorreto");
-            return null;
           }
+
           return response;
-        } catch (e) {
+        } catch (e: any) {
           console.log(e);
-          return null;
+          return null
         }
       }
     })

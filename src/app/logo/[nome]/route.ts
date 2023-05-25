@@ -1,8 +1,4 @@
 import { NextResponse } from "next/server";
-
-import pdfMake from "pdfmake/build/pdfmake";
-import { TDocumentDefinitions } from "pdfmake/interfaces";
-import PdfPrinter from "pdfmake";
 import fs from "fs";
 import path from "path";
 

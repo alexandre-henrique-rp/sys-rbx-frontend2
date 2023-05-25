@@ -13,9 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const inter = Ubuntu({
   weight: ['300', '400', '500', '700'],
-  style: ['normal', 'italic'],
   subsets: ['latin'],
-  display: 'swap',
 })
 
 interface IProps {
@@ -42,7 +40,7 @@ export default function RootLayout({ children, session }: IProps) {
 
 
     <html lang="pt-BR">
-      <body className={inter.className}>
+      <body className={inter.style.fontFamily}>
         <Providers>
           <Flex
             h={'100vh'}

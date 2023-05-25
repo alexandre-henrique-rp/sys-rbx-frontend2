@@ -133,7 +133,7 @@ export const CardList = (props: { id: string }) => {
                   shadow="md"
                   bg="white"
                   w="sm"
-                  px={5}
+                  px={4}
                   py={4}
                 >
                   <Box>
@@ -205,7 +205,7 @@ export const CardList = (props: { id: string }) => {
                           colorScheme={"blackAlpha"}
                           onClick={() =>
                             push(
-                              "/Propostas/update/" + i.attributes.nPedido
+                              "/propostas/editar/" + i.attributes.nPedido
                             )
                           }
                         >
