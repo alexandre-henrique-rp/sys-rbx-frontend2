@@ -1,6 +1,10 @@
 export function capitalizeWords(str: string) {
-  // Divide a string em um array de palavras
-  var words = str.split(' ');
+  // Verifica se a string é nula ou indefinida
+  if (str === null || str === undefined) {
+    return ''; // Retorna uma string vazia ou faça o tratamento adequado ao caso
+  }
+  // Divide a string em um array de palavras, ignorando caracteres especiais
+  var words = str.split(/[^A-Za-z0-9]+/);
   // Itera por cada palavra no array
   for (var i = 0; i < words.length; i++) {
     // Converte a primeira letra da palavra para maiúscula e mantém o restante da palavra em minúscula

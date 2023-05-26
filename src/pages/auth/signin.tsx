@@ -1,3 +1,4 @@
+import Loading from '@/component/elements/loading';
 import {
   Button,
   Flex,
@@ -12,30 +13,48 @@ import {
 } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { FormEventHandler, useState } from 'react';
 
 const SignIn: NextPage = (): JSX.Element => {
   const [user, setUser] = useState<string>('');
   const [pass, setPass] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const router =  useRouter()
   const toast = useToast();
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    const res: any = await signIn('credentials', {
-      email: user,
-      password: pass,
-      redirect: false,
-    });
-    
-    if (res.status !== 200) {
+    if (!user || !pass) {
       toast({
         title: 'Usuario ou Senha Incorreto',
         status: 'error',
         duration: 5000,
         position: 'top-right',
       });
+    } else {
+      setLoading(true);
+      e.preventDefault();
+      const res: any = await signIn('credentials', {
+        email: user,
+        password: pass,
+        redirect: false,
+      });
+  
+      if (res.status !== 200) {
+        setLoading(false);
+        toast({
+          title: 'Usuario ou Senha Incorreto',
+          status: 'error',
+          duration: 5000,
+          // position: 'top-right',
+        });
+      }
     }
   };
+
+  if (loading) {
+    return <Loading size="200px">Carregando...</Loading>;
+  }
 
   return (
     <Stack
@@ -45,7 +64,13 @@ const SignIn: NextPage = (): JSX.Element => {
     >
       <Flex p={8} flex={1} align={'center'} justify={'center'}>
         <Stack spacing={4} w={'full'} maxW={'md'}>
-          <Heading fontSize={'2xl'}>CRM RiberMax</Heading>
+          <Image
+            alt={'Logo'}
+            objectFit={'cover'}
+            w={'18rem'}
+            m={'auto'}
+            src={'https://ribermax.com.br/images/logomarca-efect.webp?w=1080&q=75'}
+          />
           <form onSubmit={handleSubmit}>
             <FormControl>
               <FormLabel htmlFor="email">Usuário</FormLabel>
@@ -71,7 +96,7 @@ const SignIn: NextPage = (): JSX.Element => {
                 align={'start'}
                 justify={'space-between'}
               >
-                <Link color={'blue.500'}>Esqueceu sua senha?</Link>
+                <Link color={'blue.500'} onClick={() => router.push('/auth/verify-request')}>Esqueceu sua senha?</Link>
               </Stack>
               <Button colorScheme={'blue'} variant={'solid'} type="submit">
                 Sign in
@@ -84,9 +109,7 @@ const SignIn: NextPage = (): JSX.Element => {
         <Image
           alt={'Login Image'}
           objectFit={'cover'}
-          src={
-            'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80'
-          }
+          src={'https://ribermax.com.br/images/porto%20de%20santos.jpg?w=1080&q=75'}
         />
       </Flex>
     </Stack>

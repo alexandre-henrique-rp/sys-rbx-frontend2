@@ -1,98 +1,102 @@
 import { useRouter } from "next/router";
-import { Box, Button, Flex, Select } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { Box, Button, Flex, FormLabel, Input, Select } from "@chakra-ui/react";
+import { Suspense, useEffect, useState } from "react";
+import CardEmpresas from '@/component/empresas/fragment/card';
+import Loading from "@/component/elements/loading";
 
 
 function Empresas() {
-  const router = useRouter();
-  const { data: session } = useSession();
-  const [Data, setData] = useState<any[]>([]);
-  const [id, setId] = useState("");
+  const [empresas, setEmpresas] = useState([]);
+  const [pesquisa, sePesquisa] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { push } = useRouter()
 
   useEffect(() => {
-    (async()=> {
-      await fetch("/api/db/empresas/getEmpresamin")
-      .then((Response) => Response.json())
-      .then((resposta: any) => setData(resposta) )
-      .catch((err) => console.log)
+    (async () => {
+      setLoading(true)
+      const response = await fetch('/api/empresas/get/list_empresas');
+      const data = await response.json();
+      setEmpresas(data);
+      setLoading(false)
     })()
-  }, []);
+  }, [])
+  
+  const LowerBusca = pesquisa.toLowerCase()
+
+  const empresaFilter: any = empresas.filter((E: any) => {
+    const nome = E.attributes.nome
+    return nome.toLowerCase().includes(LowerBusca)
+  })
+
+  if (loading) {
+    return <Loading size="200px">Carregando...</Loading>;
+  }
 
   return (
-    <Flex h="100%" w="100%" flexDir={"column"} justifyContent="center">
-      <Flex
-        w={"100%"}
-        borderBottom={"2px"}
-        borderColor={"gray.200"}
-        py={'1rem'}
-        px={'3rem'}
-        justifyContent={"space-evenly"}
-        alignItems={"center"}
-        flexDir={{ sm: "column", md: "row" }}
-      >
-        <Flex gap="1rem" alignItems={"center"}>
-          <Select
-            borderColor="gray.600"
-            focusBorderColor="brand.400"
-            size="md"
-            w="18rem"
-            fontSize="xs"
-            rounded="md"
-            placeholder="Selecione uma opção"
-            onChange={(e) => setId(e.target.value)}
-          >
-            {!Data
-              ? null
-              : Data.map((item: any) => (
-                <option key={item.id} value={item.id}>
-                  {item.attributes.nome}
-                </option>
-              ))}
-          </Select>
-
-        </Flex>
-        <Box
-          display={"flex"}
-          gap={3}
-          h="100%"
-          justifyContent={'center'}
-          alignItems="center"
-          flexWrap={'wrap'}
+    <>
+      <Flex h="100vh" w="100%" flexDir={"column"} justifyContent="center">
+        <Flex
+          w={"100%"}
+          borderBottom={"2px"}
+          borderColor={"gray.200"}
+          py={'1rem'}
+          px={'3rem'}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          flexDir={{ sm: "column", md: "row" }}
         >
-          <Button
-            fontSize={'0.8rem'}
-            colorScheme="blackAlpha"
-            onClick={() => router.push(`/empresas/atualizar/${id}`)}
-          >
-            Editar Empresa
-          </Button>
-          <Button
-            colorScheme="whatsapp"
-            fontSize={'0.8rem'}
-            onClick={() => router.push("/empresas/cadastro")}
-          >
-            Cadastrar Empresa
-          </Button>
-          <Button fontSize={'0.8rem'} colorScheme="cyan" onClick={() => router.push('/pessoas/cadastro')}>Add Nova Pessoa</Button>
-          {session?.user.pemission !== "Adm" ? null : (
-            <Button
-              h={{ md: "40%", sm: "70%" }}
-              colorScheme="telegram"
-              fontSize={'0.8rem'}
-              onClick={() => router.push("/empresas/ativate/")}
+          <Flex gap="1rem" alignItems={"center"} w={{ sm: "100%", md: "50%" }}>
+            <FormLabel
+              fontSize="lg"
+              fontWeight="md"
+              color="gray.700"
+              textTransform="capitalize"
+              letterSpacing="wide"
             >
-              Ativar Cadastro
+              Busca por empresa
+            </FormLabel>
+            <Input
+              type="text"
+              borderColor="gray.600"
+              focusBorderColor="brand.400"
+              size="md"
+              w="19rem"
+              fontSize="md"
+              rounded="md"
+              onChange={(e) => sePesquisa(e.target.value)}
+              value={pesquisa}
+            />
+
+          </Flex>
+          <Box
+            display={"flex"}
+            gap={3}
+            h="100%"
+            justifyContent={'center'}
+            alignItems="center"
+            flexWrap={'wrap'}
+          >
+            <Button
+              colorScheme="whatsapp"
+              fontSize={'0.8rem'}
+              onClick={() => push("/empresas/cadastro")}
+            >
+              Cadastrar Empresa
             </Button>
-          )}
+            <Button fontSize={'0.8rem'} colorScheme="cyan" onClick={() => push('/pessoas/criar')}>Add Nova Pessoa</Button>
+          </Box>
+        </Flex>
+        <Box h={"95%"} bg="#edf3f8" overflow={"auto"}>
+          <Flex py={50} flexWrap={'wrap'} gap='' justifyContent={"center"} px={5} w="full">
+            <Suspense fallback={<div>Carregando dados...</div>}>
+              <CardEmpresas data={empresaFilter} />
+            </Suspense>
+          </Flex>
         </Box>
       </Flex>
-      <Box h={"95%"} bg="#edf3f8" overflow={"auto"}>
-        <Flex py={50} justifyContent={"center"} px={5} w="full">
-        </Flex>
-      </Box>
-    </Flex>
-  );
+    </>
+  )
 }
+
 
 export default Empresas;

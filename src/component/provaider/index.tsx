@@ -14,64 +14,63 @@ function Layout({ children }: { children: React.ReactNode }): JSX.Element {
     return <Loading size="200px">Carregando...</Loading>;
   }
 
-  if (!session && router.asPath !== '/auth/signin') {
+  if (!session) {
+    if (router.asPath === '/auth/verify-request') {
+      return <>{children}</>;
+    } else if (router.asPath === '/auth/signin') {
+      return <>{children}</>;
+    } else if (router.asPath === '/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000&error=CredentialsSignin') {
+      toast({
+        title: 'Email ou senha incorreto',
+        description: 'As credenciais que você está usando são inválidas.',
+        status: 'error',
+        duration: 7000,
+        position: 'top-right',
+        isClosable: true,
+      });
+      return <>{children}</>;
+    }else if (router.asPath === '/') {
+      router.push('/auth/signin');
+      return <Loading size="200px">Redirecionando...</Loading>;
+    }else if (router.asPath !== '/auth/signin') {
+      router.push('/auth/signin');
+    }
     router.push('/auth/signin');
   }
 
-  if (!status && router.asPath !== '/auth/signin') {
+  if (!status) {
+    if (router.asPath === '/auth/verify-request') {
+      return <>{children}</>;
+    } else if (router.asPath === '/auth/signin') {
+      return <>{children}</>;
+    } else if (router.asPath === '/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000&error=CredentialsSignin') {
+      toast({
+        title: 'Email ou senha incorreto',
+        description: 'As credenciais que você está usando são inválidas.',
+        status: 'error',
+        duration: 7000,
+        position: 'top-right',
+        isClosable: true,
+      });
+      return <>{children}</>;
+    }else if (router.asPath === '/') {
+      router.push('/auth/signin');
+      return <Loading size="200px">Redirecionando...</Loading>;
+    }else if (router.asPath !== '/auth/signin') {
+      router.push('/auth/signin');
+    }
     router.push('/auth/signin');
-  }
-
-  if (!session && router.asPath === '/auth/signin') {
-    return <>{children}</>;
-  }
-
-  if (!session && router.asPath !== '/auth/signin') {
-    router.push('/auth/signin');
-  }
-
-  if (
-    !session &&
-    router.asPath ===
-      '/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000&error=CredentialsSignin'
-  ) {
-    toast({
-      title: 'Email ou senha incorreto',
-      description: 'As credenciais que você está usando são inválidas.',
-      status: 'error',
-      duration: 7000,
-      position: 'top-right',
-      isClosable: true,
-    });
-    return <>{children}</>;
-  }
-
-  if (!status && router.asPath === '/') {
-    router.push('/auth/signin');
-    return <Loading size="200px">Carregando...</Loading>;
-  }
-
-  if (!session && router.asPath === '/') {
-    router.push('/auth/signin');
-    return <Loading size="200px">Carregando...</Loading>;
-  }
-
-  if (
-    (session && router.asPath === '/auth/signin') ||
-    (status && router.asPath === '/auth/signin')
-  ) {
-    router.push('/');
-    const UserEmail: any|null = session?.user?.email
-    localStorage.setItem("email", UserEmail);
-    return <Loading size="200px">Redirecionando...</Loading>;
   }
 
   if (router.asPath === '/auth/signin#') {
     router.push('/auth/signin');
     return <Loading size="200px">Redirecionando...</Loading>;
   }
-
-
+  
+  if (session && router.asPath === '/auth/signin'){
+    router.push('/');
+    return <Loading size="200px">Redirecionando...</Loading>;
+  }
 
   return (
     <Flex

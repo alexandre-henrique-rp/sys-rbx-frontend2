@@ -13,6 +13,7 @@ import {
   SimpleGrid,
   Stack,
   Switch,
+  Text,
   Toast,
   useToast,
 } from "@chakra-ui/react";
@@ -20,16 +21,19 @@ import axios from "axios";
 import { cnpj } from "cpf-cnpj-validator";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { memo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { mask, unMask } from "remask";
+import { confgEnb } from "./data/confgEnb";
+import { modCaix } from "./data/modCaix";
+import { CompPessoa } from "./fragment/pessoas";
 
 
-const FormEmpresa = (props: { data?: any }) => {
+export const FormEmpresa = (props: { data?: any }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const [CNPJ, setCNPJ] = useState("");
   const [ID, setID] = useState("");
-  const [Status, setStatus] = useState("");
+  const [Status, setStatus] = useState(true);
   const [MaskCNPJ, setMaskCNPJ] = useState("");
   const [nome, setNome] = useState("");
   const [fantasia, setFantasia] = useState("");
@@ -77,17 +81,20 @@ const FormEmpresa = (props: { data?: any }) => {
   const [maxPg, setMaxpg] = useState("");
   const [forpg, setForpg] = useState("");
   const [frete, setFrete] = useState("");
+  const [Atualizar, setAtualizar] = useState(false);
   const [Responsavel, setResponsavel] = useState("");
   const toast = useToast();
 
   useEffect(() => {
-    if (props.data) {
+    if (props.data.length !== 0) {
       const data = props.data
-      const empresa = data.empresa.attributes;
+      console.log("🚀 ~ file: index.tsx:90 ~ useEffect ~ data:", data)
+      const empresa = data.attributes;
 
       setResponsavel(empresa.responsavel.data?.id);
-      setID(empresa.id);
+      setID(data.id);
       setCNPJ(empresa.CNPJ);
+      setMaskCNPJ(mask(empresa.CNPJ, ["99.999.999/9999-99"]))
       setNome(empresa.nome);
       setFantasia(empresa.fantasia);
       setTipoPessoa(empresa.tipoPessoa);
@@ -133,6 +140,7 @@ const FormEmpresa = (props: { data?: any }) => {
       setForpg(empresa.forpg);
       setFrete(empresa.frete);
       setStatus(empresa.status);
+      setAtualizar(true)
     }
   }, [props.data])
 
@@ -166,28 +174,23 @@ const FormEmpresa = (props: { data?: any }) => {
       })
         .then(function (response) {
           setFantasia(capitalizeWords(response.data.razao_social));
-          setTipoPessoa("cnpj");
-          setIE(
-            response.data.estabelecimento.inscricoes_estaduais[0].inscricao_estadual
-          );
-          setIeStatus(
-            response.data.estabelecimento.inscricoes_estaduais[0].ativo
-          );
-          const end = capitalizeWords(response.data.estabelecimento.tipo_logradouro + " " + response.data.estabelecimento.logradouro)
+          const estabelecimento = response.data.estabelecimento
+
+          setIE(estabelecimento.inscricoes_estaduais[0].inscricao_estadual);
+          setIeStatus(estabelecimento.inscricoes_estaduais[0].ativo);
+          const end = capitalizeWords(estabelecimento.tipo_logradouro + " " + estabelecimento.logradouro)
           setEndereco(end);
-          setNumero(response.data.estabelecimento.numero);
-          setComplemento(response.data.estabelecimento.complemento);
-          setBairro(capitalizeWords(response.data.estabelecimento.bairro));
-          setCep(response.data.estabelecimento.cep);
-          setCidade(capitalizeWords(response.data.estabelecimento.cidade.nome));
-          setUf(response.data.estabelecimento.estado.sigla);
-          let ddd = response.data.estabelecimento.ddd1;
-          let tel1 = response.data.estabelecimento.telefone1;
-          setFone(ddd + tel1);
-          setEmail(response.data.estabelecimento.email);
-          setPais(capitalizeWords(response.data.estabelecimento.pais.nome));
-          setCodpais(response.data.estabelecimento.pais.id);
-          setCNAE(response.data.estabelecimento.atividade_principal.id);
+          setNumero(estabelecimento.numero);
+          setComplemento(estabelecimento.complemento);
+          setBairro(capitalizeWords(estabelecimento.bairro));
+          setCep(estabelecimento.cep);
+          setCidade(capitalizeWords(estabelecimento.cidade.nome));
+          setUf(estabelecimento.estado.sigla);
+          setFone(estabelecimento.ddd1 + estabelecimento.telefone1);
+          setEmail(estabelecimento.email);
+          setPais(capitalizeWords(estabelecimento.pais.nome));
+          setCodpais(estabelecimento.pais.id);
+          setCNAE(estabelecimento.atividade_principal.id);
           setPorte(response.data.porte.descricao);
           const cheksimples =
             response.data.simples === null
@@ -196,19 +199,6 @@ const FormEmpresa = (props: { data?: any }) => {
                 ? true
                 : false;
           setSimples(cheksimples);
-          const ICMSisent =
-            response.data.simples !== null &&
-              response.data.simples.mei === "sim" &&
-              response.data.estabelecimento.inscricoes_estaduais[0].ativo === true
-              ? true
-              : false;
-          const ICMSncomtrib =
-            response.data.simples !== null &&
-              response.data.simples.mei === "sim" &&
-              response.data.estabelecimento.inscricoes_estaduais[0].ativo ===
-              false
-              ? true
-              : false;
         })
         .catch(function (error) {
           console.log(error);
@@ -230,7 +220,7 @@ const FormEmpresa = (props: { data?: any }) => {
     data: {
       nome: nome,
       fantasia: fantasia,
-      tipoPessoa: tipoPessoa,
+      tipoPessoa: "cnpj",
       endereco: endereco,
       numero: numero,
       complemento: complemento,
@@ -251,7 +241,7 @@ const FormEmpresa = (props: { data?: any }) => {
       porte: porte,
       simples: simples,
       ieStatus: ieStatus,
-      status: true,
+      status: Status,
       adFrailLat: adFrailLat,
       adFrailCab: adFrailCab,
       adEspecialLat: adEspecialLat,
@@ -279,64 +269,63 @@ const FormEmpresa = (props: { data?: any }) => {
       vendedorId: session?.user.id,
       responsavel: Responsavel,
       history: historico,
+      apiauthorization: session?.user.email
     },
   };
 
-  const strapi = async () => {
-    const url = "/api/db/empresas/post";
-    const validateString = [
-      { mudulo: nome, valor: "Nome" },
-      { mudulo: CNPJ, valor: "cnpj" },
-      { mudulo: celular, valor: "WhatsApp" },
-      { mudulo: Responsavel, valor: "Responsável" },
-    ];
-    const filter = validateString.filter((m) => m.mudulo === "");
-    if (tablecalc === "") {
-      toast({
-        title: `A Tabela de calculo deve ser definida`,
-        status: "warning",
-        duration: 2000,
-      });
-    }
-    if (filter.length > 1) {
-      const alert = filter.map((i) => {
-        toast({
-          title: `Favor verificar campo ${i.valor}`,
-          status: "warning",
-          duration: 2000,
-
-        });
-      });
-      return alert;
-    } else if (filter.length !== 0 && filter.length < 2) {
-      const resp = filter.map((i) => i.valor);
-      toast({
-        title: `Favor verificar campo ${resp}`,
-        status: "warning",
-        duration: 2000,
-      });
-    } else {
-      axios({
-        method: "POST",
-        url: url,
-        data: data,
+  const save = async () => {
+    if (Atualizar) {
+      await axios({
+        method: 'PUT',
+        url: `/api/empresas/put/${ID}`,
+        data: data
       })
-        .then((response) => {
+        .then((retorno: any) => {
+          console.log(retorno)
           toast({
             title: "Cliente criado com sucesso",
+            description: retorno,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+          // router.push('/empresas');
+        })
+        .catch((error: any) => {
+          toast({
+            title: "Ops! Ocorreu um erro",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        })
+    } else {
+      await axios({
+        method: 'POST',
+        url:'/api/empresas/post',
+        data: data
+      })
+        
+        .then((retorno: any) => {
+          console.log(retorno.data)
+          toast({
+            title: "Cliente criado com sucesso",
+            description: retorno.data,
             status: "success",
             duration: 3000,
             isClosable: true,
           });
           router.push('/empresas');
-          return response.data;
         })
-        .catch((err) => console.error(err));
+        .catch((error: any) => {
+          toast({
+            title: "Ops! Ocorreu um erro",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        })
     }
-  };
-
-  const save = async () => {
-    await strapi();
   };
 
   function getResponsavel(respons: React.SetStateAction<string>) {
@@ -359,8 +348,6 @@ const FormEmpresa = (props: { data?: any }) => {
     setCelular(valorLinpo);
     setWhatsMask(masked);
   };
-
-
 
   return (
     <>
@@ -451,8 +438,23 @@ const FormEmpresa = (props: { data?: any }) => {
                     >
                       Buscar dados
                     </Button>
+                    <Box mt={5} hidden={!!props.data}>
+                      <Flex>
+                        <Box ms={10} mt={'auto'}>
+                          <Text>Status</Text>
+                        </Box>
+                        <Box ms={5} mt={'auto'}>
+                          <Switch
+                            colorScheme="green"
+                            borderColor="gray.900"
+                            rounded="md"
+                            isChecked={Status}
+                            onChange={(e) => setStatus(e.target.checked)}
+                          />
+                        </Box>
+                      </Flex>
+                    </Box>
                   </SimpleGrid>
-
                   <SimpleGrid columns={9} spacing={3}>
                     <FormControl as={GridItem} colSpan={[5, 2]}>
                       <FormLabel
@@ -1074,8 +1076,7 @@ const FormEmpresa = (props: { data?: any }) => {
                     <Heading as={GridItem} colSpan={12} mb={5} size="sd">
                       Modelos de Caixas
                     </Heading>
-                    {modCaix.map((item) => {
-
+                    {modCaix.map((item: any) => {
                       const val =
                         item.id === "1"
                           ? cxEco
@@ -1203,6 +1204,3 @@ const FormEmpresa = (props: { data?: any }) => {
     </>
   );
 }
-
-
-export default memo(FormEmpresa)
