@@ -5,9 +5,8 @@ export default async function GetEmpresa(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const { id } = req.query;
     await fetch(
-      process.env.NEXT_PUBLIC_STRAPI_API_URL + `/empresas/${id}?&populate=*`,
+      process.env.NEXT_PUBLIC_STRAPI_API_URL + `/pessoas?filters[status][$eq]=true&populate=*`,
       {
         method: "GET",
         headers: {
@@ -18,11 +17,10 @@ export default async function GetEmpresa(
     )
       .then((resp) => resp.json())
       .then((Response: any) => {
-        return res.status(200).json(Response.data);
+        res.status(200).json(Response.data);
       })
       .catch((err: any) => {
-        console.log("🚀 ~ file: [id].ts:25 ~ err:", err)
-        return res.status(400).json({
+        res.status(400).json({
           error: err.response.data,
           mensage: err.response.data.error,
           detalhe: err.response.data.error.details

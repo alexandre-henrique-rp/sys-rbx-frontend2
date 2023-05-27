@@ -6,26 +6,26 @@ import { useEffect, useState } from "react";
 export default function EmpresaId() {
   const router = useRouter()
   const id = router.query.id;
-  const [dados, setDados] = useState<any>([])
+  const [dados, setDados] = useState([])
   const [loading, setLoading] = useState<boolean>(false)
-  
-  useEffect(()=>{
-    (async()=>{
+
+  useEffect(() => {
+    (async () => {
       setLoading(true)
       const response = await fetch(`/api/empresas/get/id/${id}`)
       const json = await response.json()
-      setDados(json)
+      setDados(await json)
       setLoading(false)
     })()
   }, [id])
-  
+
   if (loading) {
     return <Loading size="200px">Carregando...</Loading>;
   }
 
   return (
     <>
-    <FormEmpresa data={dados}/>
+      <FormEmpresa data={dados} />
     </>
   );
 }

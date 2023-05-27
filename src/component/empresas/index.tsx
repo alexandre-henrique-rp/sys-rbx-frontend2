@@ -84,65 +84,6 @@ export const FormEmpresa = (props: { data?: any }) => {
   const [Responsavel, setResponsavel] = useState("");
   const toast = useToast();
 
-  useEffect(() => {
-    if (props.data.length !== 0) {
-      const data = props.data
-      console.log("🚀 ~ file: index.tsx:90 ~ useEffect ~ data:", data)
-      const empresa = data.attributes;
-
-      setResponsavel(empresa.responsavel.data?.id);
-      setID(data.id);
-      setCNPJ(empresa.CNPJ);
-      setMaskCNPJ(mask(empresa.CNPJ, ["99.999.999/9999-99"]))
-      setNome(empresa.nome);
-      setFantasia(empresa.fantasia);
-      setFone(empresa.fone);
-      setCelular(empresa.celular);
-      setEmail(empresa.email);
-      setEmailNfe(empresa.emailNfe);
-      setIeStatus(empresa.ieStatus);
-      setCNAE(empresa.CNAE);
-      setIE(empresa.Ie);
-      setPorte(empresa.porte);
-      setSimples(empresa.simples);
-      setSite(empresa.site);
-      setEndereco(capitalizeWords(empresa.endereco));
-      setNumero(empresa.numero);
-      setBairro(capitalizeWords(empresa.bairro));
-      setComplemento(capitalizeWords(empresa.complemento));
-      setCidade(capitalizeWords(empresa.cidade));
-      setUf(empresa.uf);
-      setCep(empresa.cep);
-      setPais(empresa.pais);
-      setCodpais(empresa.codpais);
-      setAdFragilLat(empresa.adFrailLat);
-      setAdFragilCab(empresa.adFrailCab);
-      setAdEspecialLat(empresa.adEspecialLat);
-      setAdEspecialCab(empresa.adEspecialCab);
-      setLatFCab(empresa.latFCab);
-      setCabChao(empresa.cabChao);
-      setCabTop(empresa.cabTop);
-      setCxEco(empresa.cxEco);
-      setCxEst(empresa.cxEst);
-      setCxLev(empresa.cxLev);
-      setCxRef(empresa.cxRef);
-      setCxSupRef(empresa.cxSupRef);
-      setPlatSMed(empresa.platSMed);
-      setCxResi(empresa.cxResi);
-      setEngEco(empresa.engEco);
-      setEngLev(empresa.engLev);
-      setEngRef(empresa.engRef);
-      setEngResi(empresa.engResi);
-      setTablecalc(empresa.tablecalc);
-      setMaxpg(empresa.maxPg);
-      setForpg(empresa.forpg);
-      setFrete(empresa.frete);
-      setStatus(empresa.status);
-      setAtualizar(true)
-    }
-  }, [props.data])
-
-
   const consulta = () => {
     const validCnpj = cnpj.isValid(CNPJ);
     if (CNPJ.length < 13) {
@@ -300,10 +241,10 @@ export const FormEmpresa = (props: { data?: any }) => {
     } else {
       await axios({
         method: 'POST',
-        url:'/api/empresas/post',
+        url: '/api/empresas/post',
         data: data
       })
-        
+
         .then((retorno: any) => {
           console.log(retorno.data)
           toast({
@@ -346,6 +287,67 @@ export const FormEmpresa = (props: { data?: any }) => {
     setCelular(valorLinpo);
     setWhatsMask(masked);
   };
+
+  useEffect(() => {
+    if (props.data) {
+      const data = props.data
+      console.log("🚀 ~ file: index.tsx:90 ~ useEffect ~ data:", data.length)
+      const empresa = data?.attributes;
+
+      if (data.length !== 0) {
+        setResponsavel(empresa?.responsavel.data?.id);
+        setID(data.id);
+        setCNPJ(empresa?.CNPJ);
+        setMaskCNPJ(mask(empresa.CNPJ, ["99.999.999/9999-99"]))
+        setNome(empresa?.nome);
+        setFantasia(empresa?.fantasia);
+        setFone(empresa?.fone);
+        setCelular(empresa?.celular);
+        setEmail(empresa?.email);
+        setEmailNfe(empresa?.emailNfe);
+        setIeStatus(empresa?.ieStatus);
+        setCNAE(empresa?.CNAE);
+        setIE(empresa?.Ie);
+        setPorte(empresa?.porte);
+        setSimples(empresa?.simples);
+        setSite(empresa?.site);
+        setEndereco(capitalizeWords(empresa?.endereco));
+        setNumero(empresa?.numero);
+        setBairro(capitalizeWords(empresa?.bairro));
+        setComplemento(capitalizeWords(empresa?.complemento));
+        setCidade(capitalizeWords(empresa?.cidade));
+        setUf(empresa?.uf);
+        setCep(empresa?.cep);
+        setPais(empresa?.pais);
+        setCodpais(empresa?.codpais);
+        setAdFragilLat(empresa?.adFrailLat);
+        setAdFragilCab(empresa?.adFrailCab);
+        setAdEspecialLat(empresa?.adEspecialLat);
+        setAdEspecialCab(empresa?.adEspecialCab);
+        setLatFCab(empresa?.latFCab);
+        setCabChao(empresa?.cabChao);
+        setCabTop(empresa?.cabTop);
+        setCxEco(empresa?.cxEco);
+        setCxEst(empresa?.cxEst);
+        setCxLev(empresa?.cxLev);
+        setCxRef(empresa?.cxRef);
+        setCxSupRef(empresa?.cxSupRef);
+        setPlatSMed(empresa?.platSMed);
+        setCxResi(empresa?.cxResi);
+        setEngEco(empresa?.engEco);
+        setEngLev(empresa?.engLev);
+        setEngRef(empresa?.engRef);
+        setEngResi(empresa?.engResi);
+        setTablecalc(empresa?.tablecalc);
+        setMaxpg(empresa?.maxPg);
+        setForpg(empresa?.forpg);
+        setFrete(empresa?.frete);
+        setStatus(empresa?.status);
+        setAtualizar(true)
+      }
+    }
+  }, [props.data])
+
 
   return (
     <>
@@ -566,7 +568,7 @@ export const FormEmpresa = (props: { data?: any }) => {
                         })()}
                       />
                     </FormControl>
-                    <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
+                    <FormControl as={GridItem} colSpan={[10, 3]}>
                       <CompPessoa
                         Resp={Responsavel}
                         onAddResp={getResponsavel}

@@ -50,9 +50,9 @@ export const FormPessoa = (props: { data?: any }) => {
   const [Atualizar, setAtualizar] = useState(false);
 
   useEffect(() => {
-    if (props.data) {
+    if (props.data.length !== 0) {
       const data = props.data;
-      const pessoa = data.attributes
+      const pessoa = data?.attributes
 
       setID(data.id)
       setNome(capitalizeWords(pessoa.nome));
@@ -184,12 +184,11 @@ export const FormPessoa = (props: { data?: any }) => {
           console.log(retorno)
           toast({
             title: "Cliente criado com sucesso",
-            description: retorno,
             status: "success",
             duration: 3000,
             isClosable: true,
           });
-          router.push('/pessoas');
+          router.back();
         })
         .catch((error: any) => {
           toast({
@@ -209,13 +208,12 @@ export const FormPessoa = (props: { data?: any }) => {
         .then((retorno: any) => {
           console.log(retorno.data)
           toast({
-            title: "Cliente criado com sucesso",
-            description: retorno.data,
+            title: "Cliente criado com sucesso", 
             status: "success",
             duration: 3000,
             isClosable: true,
           });
-          router.push('/pessoas');
+          router.back();
         })
         .catch((error: any) => {
           toast({
@@ -443,7 +441,6 @@ export const FormPessoa = (props: { data?: any }) => {
                           size="xs"
                           w="full"
                           rounded="md"
-
                           onChange={(e: any) => setComplemento(capitalizeWords(e.target.value))}
                           value={complemento}
                         />

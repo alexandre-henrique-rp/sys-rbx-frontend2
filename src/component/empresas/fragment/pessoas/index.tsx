@@ -1,9 +1,11 @@
-import { Box, FormLabel, Select } from "@chakra-ui/react";
+import { Box, Button, Flex, FormLabel, Select } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export const CompPessoa = (props: { Resp?: string; onAddResp: any }) => {
   const [dados, setDados] = useState<any>(null);
   const [valor, setValor] = useState('');
+  const { push } = useRouter()
  
   useEffect(() => {
     (async()=>{
@@ -25,7 +27,8 @@ export const CompPessoa = (props: { Resp?: string; onAddResp: any }) => {
   }
 
   return (
-    <Box>
+    <Flex gap={3} alignItems={'center'}>
+    <Box w={'15rem'}>
       <FormLabel
         fontSize="xs"
         fontWeight="md"
@@ -60,5 +63,12 @@ export const CompPessoa = (props: { Resp?: string; onAddResp: any }) => {
             })}
       </Select>
     </Box>
+    <Box mt={4}>
+    <Button colorScheme="facebook" onClick={()=> push(`/pessoas/${valor}`)}>Editar reponsavel</Button>
+    </Box>
+    <Box mt={4}>
+    <Button colorScheme="teal" onClick={()=> push(`/pessoas/cadastro`)}>Adicionar reponsavel</Button>
+    </Box>
+    </Flex>
   );
 }
