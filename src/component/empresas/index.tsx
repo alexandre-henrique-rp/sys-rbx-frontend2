@@ -37,7 +37,6 @@ export const FormEmpresa = (props: { data?: any }) => {
   const [MaskCNPJ, setMaskCNPJ] = useState("");
   const [nome, setNome] = useState("");
   const [fantasia, setFantasia] = useState("");
-  const [tipoPessoa, setTipoPessoa] = useState("");
   const [fone, setFone] = useState("");
   const [celular, setCelular] = useState("");
   const [WhatsMask, setWhatsMask] = useState("");
@@ -97,7 +96,6 @@ export const FormEmpresa = (props: { data?: any }) => {
       setMaskCNPJ(mask(empresa.CNPJ, ["99.999.999/9999-99"]))
       setNome(empresa.nome);
       setFantasia(empresa.fantasia);
-      setTipoPessoa(empresa.tipoPessoa);
       setFone(empresa.fone);
       setCelular(empresa.celular);
       setEmail(empresa.email);

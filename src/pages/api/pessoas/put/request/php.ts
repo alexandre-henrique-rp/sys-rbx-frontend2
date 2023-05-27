@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const phpPost = async (data: any, apiEmail: any) => {
+export const phpPut = async (data: any, apiEmail: any) => {
   const email = apiEmail
   await axios({
-    method: "POST",
-    url: process.env.RIBERMAX_API_URL + "/empresas",
+    method: "PUT",
+    url: process.env.RIBERMAX_PHP_API_URL + "/empresas",
     headers: {
       Email: email,
       Token: process.env.ATORIZZATION_TOKEN_RIBERMAX,
@@ -13,9 +13,9 @@ export const phpPost = async (data: any, apiEmail: any) => {
     data: new URLSearchParams(data).toString(),
   })
     .then((response) => {
-      return 'Cliente salvo corretamente no Banco de dados PHP'+ response.data;
+      return 'Cliente atualizado corretamente no Banco de dados PHP'+ response.data;
     })
     .catch((error) => {
-      return 'Erro em salvar cliente no Banco de dados'+ error;
+      return 'Erro em atualizar cliente no Banco de dados'+ error;
     });
 }

@@ -10,7 +10,7 @@ export default async function GetEmpresa(
 ) {
   if (req.method === 'POST') {
     const bodyData = req.body;
-    const Email = bodyData.apiauthorization
+    const Email = bodyData.data.apiauthorization
     
 
     const DataRbx = {
