@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { BtmRetorno } from "@/component/elements/BtRetorno";
 import {
   Box,
   Button,
@@ -13,6 +14,12 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { SetStateAction, useEffect, useState } from "react";
+import { SelecAtendimento } from "../SelectAndamento";
+import { SelectEtapa } from "../SelectEtapa";
+import { SelectStatus } from "../SelectStatus";
+import { SelectMPerca } from "../SelectMPerca";
+
+
 
 
 export const NegocioHeader = (props: {
@@ -77,7 +84,7 @@ export const NegocioHeader = (props: {
     };
 
     await axios({
-      url: "/api/db/business/put/id/" + ID,
+      url: "/api/negocios/put/id/" + ID,
       method: "PUT",
       data: data,
     })
@@ -99,6 +106,12 @@ export const NegocioHeader = (props: {
   function getAtendimento(atendimento: SetStateAction<string>) {
     setApproach(atendimento);
   }
+  function GetEtapa(etapa: SetStateAction<string>) {
+    setEtapa(etapa);
+  }
+  function getPerca(perca: SetStateAction<string>) {
+    setMperca(perca);
+  }
 
 
   return (
@@ -106,7 +119,7 @@ export const NegocioHeader = (props: {
       <Flex>
         <Flex gap={8} w={"85%"} flexWrap={"wrap"}>
           <Flex alignItems={"center"}>
-          <BtmRetorno Url="/negocios" />
+            <BtmRetorno Url="/negocios" />
           </Flex>
           <Box>
             <FormLabel
@@ -131,7 +144,7 @@ export const NegocioHeader = (props: {
           </Box>
           <Box>
             <SelecAtendimento
-              Resp={props.Approach}
+              Resp={Approach}
               onAddResp={getAtendimento}
             />
           </Box>
@@ -183,37 +196,13 @@ export const NegocioHeader = (props: {
             />
           </Box>
           <Box>
-            <FormLabel
-              htmlFor="cidade"
-              fontSize="xs"
-              fontWeight="md"
-              color="gray.700"
-              _dark={{
-                color: "gray.50",
-              }}
-            >
-              Etapa do Negócio
-            </FormLabel>
-            <Select
-              shadow="sm"
-              size="sm"
-              w="full"
-              fontSize="xs"
-              rounded="md"
-              placeholder=" "
-              border={'1px solid #6666'}
-              onChange={(e) => setEtapa(e.target.value)}
-              value={Etapa}
-            >
-              {EtapasNegocio.map((i: any) => (
-                <option key={i.id} value={i.id}>
-                  {i.title}
-                </option>
-              ))}
-            </Select>
+            <SelectEtapa Resp={Etapa} onAddResp={GetEtapa} />
           </Box>
           <Box>
-            <BtnStatus Resp={props.Status} onAddResp={getStatus} />
+            <SelectStatus Resp={Status} onAddResp={getStatus} />
+          </Box>
+          <Box hidden={Status !== "6" ? true : false}>
+            <SelectMPerca Resp={Mperca} onAddResp={getPerca} />
           </Box>
           {Status !== "6" ? null : (
             <>
@@ -300,9 +289,9 @@ export const NegocioHeader = (props: {
                     duration: 3000,
                     isClosable: true,
                   });
-                  setTimeout(()=>{
+                  setTimeout(() => {
                     router.push("/negocios")
-                  },500)
+                  }, 500)
                 })
                 .catch((err: any) => {
                   console.error(err);

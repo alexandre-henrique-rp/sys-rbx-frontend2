@@ -1,4 +1,5 @@
 import Loading from "@/component/elements/loading";
+import { NegocioHeader } from "@/component/negocios/fragment/negocioHeader";
 import { Box, Flex, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -76,7 +77,7 @@ export default function CreateNegocio() {
     if (msg) {
       (async () => {
         setLoading(true);
-        const url = "/api/db/business/get/id/" + id;
+        const url = "/api/negocios/get/id/" + id;
         console.log(url);
         //cunsulta informações gerais do cliente
         await axios({

@@ -16,16 +16,14 @@ export default async function GetEmpresa(
         "/businesses?populate=*&filters[status][$eq]=true&sort[0]=id%3Adesc",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     })
       .then((resp: any) => {
         res.status(200).json(resp.data.data);
       })
       .catch((err) => {
-        res
-          .status(err.response.status || 400)
-          .send(err.response.data.error.message);
+        res.status(400).send(err.response.data.error.message);
       });
   } else {
     return res.status(405).send({ message: "Only GET requests are allowed" });

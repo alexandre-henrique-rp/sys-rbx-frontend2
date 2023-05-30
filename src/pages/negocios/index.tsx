@@ -22,20 +22,28 @@ export default function Negocios() {
     })()
   }, [])
   
+ 
+ 
+
+  function tragetReload(Loading: boolean | ((prevState: boolean) => boolean)) {
+    console.log('aki')
+    console.log(Loading)
+    setLoad(Loading);
+    const Reload = async () => {
+      const request = await fetch('/api/negocios/get')
+      const response = await request.json()
+      setDados(response)
+    }
+    Reload()
+    setLoad(false);
+  }
+
   if (load) {
     return <Loading size="200px">Carregando...</Loading>;
   }
 
-  function tragetReload(Loading: boolean | ((prevState: boolean) => boolean)) {
-    (async() => {
-      setLoad(Loading);
-      const request = await fetch('/api/negocios/get')
-      const response = await request.json()
-      setDados(response)
-      setLoad(false);
-    })
-  }
 
+  
   return (
     <>
       <Flex h="100%" w="100%" flexDir={"column"} justifyContent="center">
@@ -54,12 +62,10 @@ export default function Negocios() {
         <Box h={"95%"} overflow={"auto"}>
           <Flex
             bg="#edf3f8"
-            pt={"1.5rem"}
-            pb={"2rem"}
-            px={"0.8rem"}
             h="100%"
-            alignItems="center"
+            flexWrap={'wrap'}
             justifyContent="center"
+            gap={4}
           >
             <NegocioCard data={dados} />
           </Flex>

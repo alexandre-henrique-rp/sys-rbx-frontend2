@@ -1,4 +1,5 @@
 /* eslint-disable react/no-children-prop */
+import Loading from "@/component/elements/loading";
 import {
   Box,
   Button,
@@ -67,7 +68,7 @@ export const theme = extendTheme({
   },
 });
 
-export const BtmNegocioCreate = (props: { onLoading: any }) => {
+export const BtmNegocioCreate = (props: { onLoading: any;  setLoading: boolean}) => {
   const { data: session } = useSession();
   const [work, setWork] = useState([]);
   const [budgets, setBudgets] = useState("");
@@ -76,6 +77,7 @@ export const BtmNegocioCreate = (props: { onLoading: any }) => {
   const [Empresa, setEmpresa] = useState("");
   const [Deadline, setDeadline] = useState("");
   const { onOpen, onClose, isOpen } = useDisclosure();
+  const [load, setLoad] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -134,6 +136,8 @@ export const BtmNegocioCreate = (props: { onLoading: any }) => {
 
   const salve = async () => {
     props.onLoading(true);
+    setLoad(true)
+
     const data = {
       status: true,
       deadline: Deadline,
@@ -150,7 +154,7 @@ export const BtmNegocioCreate = (props: { onLoading: any }) => {
       incidentRecord: [MSG],
     };
 
-    const url = "/api/db/business/post";
+    const url = "/api/negocios/post";
     await axios({
       method: "POST",
       url: url,
@@ -174,6 +178,14 @@ export const BtmNegocioCreate = (props: { onLoading: any }) => {
     setBudgetsMask("");
     onClose();
   };
+  
+  useEffect(()=>{
+    setLoad(props.setLoading)
+  }, [props.setLoading])
+
+  if (load) {
+    return <Loading size="200px">Carregando...</Loading>;
+  }
 
   return (
     <ChakraProvider theme={theme}>
