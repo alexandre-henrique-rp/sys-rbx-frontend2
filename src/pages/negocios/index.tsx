@@ -22,8 +22,6 @@ export default function Negocios() {
     })()
   }, [])
   
- 
- 
 
   function tragetReload(Loading: boolean | ((prevState: boolean) => boolean)) {
     console.log('aki')
@@ -42,8 +40,6 @@ export default function Negocios() {
     return <Loading size="200px">Carregando...</Loading>;
   }
 
-
-  
   return (
     <>
       <Flex h="100%" w="100%" flexDir={"column"} justifyContent="center">
@@ -57,15 +53,13 @@ export default function Negocios() {
           alignItems={"center"}
           justifyContent={'end'}
         >
-          <BtmNegocioCreate onLoading={tragetReload} />
+          <BtmNegocioCreate onLoading={tragetReload} setLoading={load} />
         </Flex>
         <Box h={"95%"} overflow={"auto"}>
           <Flex
             bg="#edf3f8"
             h="100%"
-            flexWrap={'wrap'}
             justifyContent="center"
-            gap={4}
           >
             <NegocioCard data={dados} />
           </Flex>

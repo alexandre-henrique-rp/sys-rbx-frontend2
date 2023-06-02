@@ -39,7 +39,7 @@ export const NegocioFooter = (props: { onGetValue: any; data: any }) => {
     if (Valor.trim() !== '') {
       await axios({
         method: 'PUT',
-        url: '/api/db/business/put/id/' + ID,
+        url: '/api/negocios/put/id/' + ID,
         data: data,
       })
         .then((res) => {
@@ -63,10 +63,8 @@ export const NegocioFooter = (props: { onGetValue: any; data: any }) => {
 
   return (
     <>
-
       <Flex
         px={'4rem'}
-        // h={'100%'}
         justifyContent={'space-between'}
         alignItems={'center'}
         bg={'#f0f2f5'}
@@ -94,7 +92,6 @@ export const NegocioFooter = (props: { onGetValue: any; data: any }) => {
           onClick={addItens}
         />
       </Flex>
-
     </>
   );
 };

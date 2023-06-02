@@ -19,6 +19,7 @@ export const NegocioCard = (props: { data: any }) => {
         <Box w={"100%"} h={"100%"} overflowX={"hidden"}>
           <Flex
             flexWrap={'wrap'}
+            gap={4}
           >
             {!dados
               ? null
@@ -44,7 +45,7 @@ export const NegocioCard = (props: { data: any }) => {
                       shadow="lg"
                       boxShadow="dark-lg"
                       bg="white"
-                      w={'23rem'}
+                      w={'27rem'}
                       key={id}
                       fontSize="0.5rem"
                       cursor={'pointer'}

@@ -15,9 +15,7 @@ export const getData = async (proposta: any) => {
   try {
     const response = await axios(config);
     const result = response.data?.data?.[0];
-
     const inf = result.attributes;
-
     const Vendedor = inf.user.data.attributes.username
     const empresaFornec = inf.fornecedorId.data.attributes;
 
@@ -36,13 +34,13 @@ export const getData = async (proposta: any) => {
         email: empresaFornec?.email,
       },
     };
-
     const nPedido = inf.nPedido;
     const frete = inf.frete;
     const datePop = inf.dataPedido;
     const fornecedor = dadosFornecedor;
     const cliente = inf.empresa.data.attributes;
     const condi = inf.condi;
+    const Desconto = inf.desconto
     const itens = inf.itens;
     const prazo = inf.prazo === null ? "" : inf.prazo;
     const venc = inf.vencPrint;
@@ -54,22 +52,7 @@ export const getData = async (proposta: any) => {
       ? ""
       : inf.business.data.id;
 
-    const link1 = {
-      url: "https://ribermax.com.br/images/logomarca-h.webp?w=1080&q=75",
-      alt: "Ribermax",
-      height: "30px",
-      margin: "1rem 0",
-    };
-    const link2 = {
-      url: "https://www.braghetopaletes.com.br/images/logomarca-bragheto-escuro.png?w=1080&q=75",
-      alt: "Bragheto",
-      height: "55px",
-      margin: "0",
-    };
-
-    const logo =
-      fornecedor.data.fantasia !== "BRAGHETO PALETES" ? link1 : link2;
-
+    const pagina = Math.ceil(itens.length  / 6)
     const cliente_pedido = inf.cliente_pedido;
 
     const data = {
@@ -85,9 +68,9 @@ export const getData = async (proposta: any) => {
       totoalGeral,
       obs,
       business,
-      logo,
       Vendedor,
-      cliente_pedido
+      cliente_pedido,
+      Desconto
     };
     return data;
   } catch (error) {

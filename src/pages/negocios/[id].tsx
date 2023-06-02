@@ -1,4 +1,6 @@
 import Loading from "@/component/elements/loading";
+import { BodyChat } from "@/component/negocios/fragment/negocioBody/imdex";
+import { NegocioFooter } from "@/component/negocios/fragment/negocioFooter";
 import { NegocioHeader } from "@/component/negocios/fragment/negocioHeader";
 import { Box, Flex, useToast } from "@chakra-ui/react";
 import axios from "axios";

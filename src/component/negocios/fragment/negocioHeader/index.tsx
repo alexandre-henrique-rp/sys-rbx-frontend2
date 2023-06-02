@@ -14,13 +14,12 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { SetStateAction, useEffect, useState } from "react";
-import { SelecAtendimento } from "../SelectAndamento";
+
 import { SelectEtapa } from "../SelectEtapa";
 import { SelectStatus } from "../SelectStatus";
 import { SelectMPerca } from "../SelectMPerca";
-
-
-
+import { ImputRetorno } from "../imputRetorno";
+import { SelecAtendimento } from "../SelectAndamento";
 
 export const NegocioHeader = (props: {
   nBusiness: string;
@@ -111,6 +110,9 @@ export const NegocioHeader = (props: {
   }
   function getPerca(perca: SetStateAction<string>) {
     setMperca(perca);
+  }
+  function getRetorno(retorno: SetStateAction<string>) {
+    setDataRetorno(retorno);
   }
 
 
@@ -204,68 +206,9 @@ export const NegocioHeader = (props: {
           <Box hidden={Status !== "6" ? true : false}>
             <SelectMPerca Resp={Mperca} onAddResp={getPerca} />
           </Box>
-          {Status !== "6" ? null : (
-            <>
-              <Box>
-                <FormLabel
-                  htmlFor="cidade"
-                  fontSize="xs"
-                  fontWeight="md"
-                  color="gray.700"
-                  _dark={{
-                    color: "gray.50",
-                  }}
-                >
-                  Motivo de Perda
-                </FormLabel>
-                <Select
-                  shadow="sm"
-                  size="sm"
-                  w="full"
-                  fontSize="xs"
-                  rounded="md"
-                  placeholder=" "
-                  border={'1px solid #6666'}
-                  onChange={(e) => setMperca(e.target.value)}
-                  value={Mperca}
-                >
-                  {StatusPerca.map((i: any) => (
-                    <option key={i.id} value={i.id}>
-                      {i.title}
-                    </option>
-                  ))}
-                </Select>
-              </Box>
-            </>
-          )}
-          {Status !== "4" ? null : (
-            <>
-              <Box>
-                <FormLabel
-                  htmlFor="cidade"
-                  fontSize="xs"
-                  fontWeight="md"
-                  color="gray.700"
-                  _dark={{
-                    color: "gray.50",
-                  }}
-                >
-                  Data de retorno
-                </FormLabel>
-                <Input
-                  shadow="sm"
-                  size="sm"
-                  w="full"
-                  type={"date"}
-                  fontSize="xs"
-                  rounded="md"
-                  border={'1px solid #6666'}
-                  onChange={(e) => setDataRetorno(e.target.value)}
-                  value={DataRetorno}
-                />
-              </Box>
-            </>
-          )}
+          <Box hidden={Status !== "4" ? true : false}>
+              <ImputRetorno Resp={DataRetorno} onAddResp={getRetorno} />
+          </Box>
         </Flex>
         <Flex alignItems={"center"} flexWrap={'wrap'} gap={3} w={"20%"}>
           <Button colorScheme={"whatsapp"} onClick={Salve}>
@@ -273,7 +216,7 @@ export const NegocioHeader = (props: {
           </Button>
           <Button
             colorScheme={"green"}
-            onClick={() => router.push("/Propostas/" + ID)}
+            onClick={() => router.push("/propostas/" + ID)}
           >
             Propostas
           </Button>
@@ -281,7 +224,7 @@ export const NegocioHeader = (props: {
             colorScheme={"red"}
             onClick={async () => {
               props.onLoad(true)
-              await axios('/api/db/business/delete/' + ID)
+              await axios('/api/negocios/delete/' + ID)
                 .then(() => {
                   toast({
                     title: 'Negocio foi Deletado',
